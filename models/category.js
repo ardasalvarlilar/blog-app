@@ -12,6 +12,14 @@ const Category = sequelize.define('category',{
     type: DataTypes.STRING,
     allowNull: false
   }
+},{
+  timestamps: false
 })
+
+async function syncTable(){
+  await Category.sync({force: true})
+  console.log('Category tablosu eklendi')
+}
+syncTable()
 
 module.exports = Category
