@@ -4,6 +4,9 @@ const imageUpload = require('../helpers/image-upload')
 const fs = require('fs')
 const db = require('../data/db')
 
+const Blog = require('../models/blog')
+const Category = require('../models/category')
+
 router.get('/blog/delete/:blogid', async (req,res) => {
   const {blogid} = req.params
 
@@ -51,7 +54,8 @@ router.post('/category/delete/:categoryid', async (req,res) => {
 
 router.get('/blog/create',async(req,res,next) => {
   try {
-    const [categories,] = await db.execute("SELECT * FROM category")
+    // const [categories,] = await db.execute("SELECT * FROM category")
+    const categories = await Category.findAll()
     res.render("admin/blog-create",{
       title: 'Blog Ekle',
       categories: categories 
@@ -69,7 +73,15 @@ router.post("/blog/create", imageUpload.upload.single('resim'),async (req,res) =
   const isActive = req.body.isActive == 'on' ? 1 : 0
 
   try {
-    await db.execute("INSERT INTO blog (title,description,image,is_home,confirm,categoryid,subtitle) VALUES(?,?,?,?,?,?,?)",[baslik,aciklama,resim,anasayfa,isActive,kategori,altbaslik])
+    await Blog.create({
+      title: baslik,
+      subtitle: altbaslik,
+      description: aciklama,
+      image: resim,
+      is_home: anasayfa,
+      confirm: isActive,
+      category_id: kategori
+    })
     res.redirect('/admin/blogs?action=create')
   } catch (error) {
     console.log(error)
@@ -89,7 +101,7 @@ router.get('/category/create',async(req,res,next) => {
 router.post("/category/create",async (req,res) => {
   const {name} = req.body
   try {
-    await db.execute("INSERT INTO category (name) VALUES(?)",[name])
+    await Category.create({name: name})
     res.redirect('/admin/categories?action=create')
   } catch (error) {
     console.log(error)
@@ -99,13 +111,12 @@ router.post("/category/create",async (req,res) => {
 router.get('/blogs/:blogid', async (req,res,next) => {
   const {blogid} = req.params
   try {
-    const [blogs, ] = await db.execute('SELECT * FROM blog WHERE blogid=?',[blogid])
-    const [categories, ] = await db.execute('SELECT * FROM  category')
-    const blog = blogs[0]
+    const blog = await Blog.findByPk(blogid)
+    const categories = await Category.findAll()
     if(blog){
       return res.render("admin/blog-edit",{
-        title: blog.title,
-        blog: blog,
+        title: blog.dataValues.title,
+        blog: blog.dataValues,
         categories: categories
       })
     }
@@ -140,13 +151,12 @@ router.post('/blogs/:blogid', imageUpload.upload.single('resim'), async (req,res
 router.get('/categories/:categoryid', async (req,res,next) => {
   const {categoryid} = req.params
   try {
-    const [categories, ] = await db.execute('SELECT * FROM category WHERE categoryid=?',[categoryid])
-    const category = categories[0]
+    const category = await Category.findByPk(categoryid)
     if(category ){
       return res.render("admin/category-edit",{
         title: category.name,
         category: category
-      })
+      }) 
     }
     res.redirect('admin/categories')
   } catch (error) {
@@ -170,7 +180,8 @@ router.post('/categories/:categoryid', async (req,res) => {
 router.get('/blogs', async (req,res,next) => {
   const {action,blogid} = req.query
   try {
-    const [blogs,] = await db.execute('SELECT blogid,title,subtitle,image FROM blog')
+    // const [blogs,] = await db.execute('SELECT blogid,title,subtitle,image FROM blog')
+    const blogs = await Blog.findAll({attributes:['blogid','title','subtitle','image']})
     res.render('admin/blog-list',{
       title: blogs[0].title,
       blogs: blogs,
@@ -185,7 +196,7 @@ router.get('/blogs', async (req,res,next) => {
 router.get('/categories', async (req,res,next) => {
   const {action,categoryid} = req.query
   try {
-    const [categories,] = await db.execute('SELECT * FROM category')
+    const categories = await Category.findAll()
     res.render('admin/category-list',{
       title: 'categories',
       categories: categories,
