@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head')%>
+</head>
+<body>
+
+
+  <%- include('../partials/nav') %>
+
+  <div class="container mt-3">
+
+    <% if (action === 'edit') { %>
+      <div id="queryString" class="alert alert-primary text-center" role="alert">
+        <h3><%= categoryid %> id numaralı category başarıyla güncellendi</h3>
+      </div>
+    <% } else if (action === 'delete') { %>
+      <div id="queryString" class="alert alert-danger text-center" role="alert">
+        <h3>category başarıyla silindi</h3>
+      </div>
+    <% } else if (action === 'create') { %>
+      <div id="queryString" class="alert alert-success text-center" role="alert">
+        <h3>category başarıyla eklendi</h3>
+      </div>
+    <% } %>
+
+
+    <div class="row">
+      <div class="col-md-12 mt-3">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <td style="width: 50px;">id</td>
+              <td>name</td>
+              <td style="width: 130px;"></td>
+            </tr>
+          </thead>
+          <tbody>
+            <% categories.forEach(category => { %>
+              <tr>
+                <td><%= category.categoryid %></td>
+                <td><%= category.name %></td>
+                <td>
+                  <a href="/admin/categories/<%= category.categoryid %>" class="btn btn-sm btn-primary">edit</a>
+                  <a href="/admin/category/delete/<%= category.categoryid  %>" class="btn btn-sm btn-danger">delete</a>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const div = document.getElementById('queryString')
+
+    setTimeout(() => {
+      div.style.display  = 'none'
+    },2000)
+  </script>
+</body>
+</html>
+

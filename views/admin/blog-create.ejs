@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head') %>
+</head>
+<body>
+
+
+  <%- include('../partials/nav') %>
+
+  <div class="container mt-3">
+
+    <div class="row">
+      <div class="col-md-12 mt-3">
+        <form method="post" enctype="multipart/form-data">
+          <div class="row mb-3">
+            <label for="baslik" class="col-sm-2 col-form-label">Başlık</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" name="baslik" id="baslik">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="altbaslik" class="col-sm-2 col-form-label">Altbaşlık</label>
+            <div class="col-sm-8">
+              <textarea name="altbaslik" class="form-control"rows="5"></textarea>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="editor" class="col-sm-2 col-form-label">Açıklama</label>
+            <div class="col-sm-8">
+              <textarea name="aciklama" class="form-control" id="editor" rows="10"></textarea>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="resim" class="col-sm-2 col-form-label">Resim</label>
+            <div class="col-sm-8">
+              <input type="file" name="resim" class="form-control" id="resim">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="kategori" class="col-sm-2 col-form-label">Kategori</label>
+            <div class="col-sm-8">
+              <select name="kategori" id="kategori" class="form-select">
+                <option value="-1" selected>seçiniz</option>
+                <% categories.forEach(category => { %>
+                  <option value="<%= category.categoryid %>"><%= category.name %></option>
+                <% }) %>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-8 offset-sm-2">
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="anasayfa" name="anasayfa">
+                <label for="anasayfa" class="form-check-label">
+                  Anasayfa
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-8 offset-sm-2">
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="isActive" name="isActive">
+                <label for="isActive" class="form-check-label">
+                  is active
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-8 offset-sm-2">
+              <button type="submit" class="btn btn-primary">Kaydet</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
+  <script>
+    ClassicEditor
+        .create( document.querySelector( '#editor' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+</script>
+</body>
+</html>
+
