@@ -13,7 +13,7 @@
     <div class="row">
       <div class="col-md-12 mt-3">
         <form method="post" enctype="multipart/form-data">
-          <input type="hidden" value="<%= blog.blogid %>" name="blogid">
+          <input type="hidden" value="<%= blog.id %>" name="blogid">
           <input type="hidden" name="resim" value="<%= blog.image%>">
           <div class="row mb-3">
             <label for="baslik" class="col-sm-2 col-form-label">Başlık</label>
@@ -46,7 +46,7 @@
               <select name="kategori"  id="kategori" class="form-select">
                 <option value="-1" selected>seçiniz</option>
                 <% categories.forEach(category => { %>
-                  <option value="<%= category.category_id %>"><%= category.name %></option>
+                  <option value="<%= category.id %>"><%= category.name %></option>
                 <% }) %>
               </select>
               
@@ -83,7 +83,7 @@
   </div>
 
   <script>
-    document.querySelector('#kategori').value = `<%= blog.categoryid %>`
+    document.querySelector('#kategori').value = `<%= blog.categoryId %>`
   </script>
   <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
   <script>

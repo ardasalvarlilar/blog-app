@@ -17,7 +17,7 @@
             <b><%= blog.title %> </b><br> isimli blog kaydını silmek istiyor musunuz?
           </p>
           <form method="post">
-            <input type="hidden" name="blogid" value="<%= blog.blogid %>">
+            <input type="hidden" name="blogid" value="<%= blog.id %>">
             <button type="submit" class="btn btn-danger">Evet</button>
             <a href="/admin/blogs" class="btn btn-primary">Vazgeç</a>
           </form>
