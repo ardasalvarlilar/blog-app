@@ -11,13 +11,15 @@ router.get('/blog/delete/:blogid', async (req,res) => {
   const {blogid} = req.params
 
   try {
-    const [blogs,]  = await db.execute('SELECT * FROM blog WHERE blogid=?',[blogid])
-    const blog = blogs[0]
+    const blog = await Blog.findByPk(blogid)
 
-    res.render('admin/blog-delete',{
-      title: "delete blog",
-      blog:blog
-    })
+    if(blog){
+      return res.render('admin/blog-delete',{
+        title: "delete blog",
+        blog:blog
+      })
+    }
+    res.redirect('/admin/blogs')
   } catch (error) {
     console.log(error)
   }
@@ -25,7 +27,16 @@ router.get('/blog/delete/:blogid', async (req,res) => {
 
 router.post('/blog/delete/:blogid', async (req,res) => {
   const { blogid } = req.body
-  await db.execute('DELETE FROM blog where blogid=?',[blogid])
+  try {
+    const blog = await Blog.findByPk(blogid)
+    if(blog){
+      await blog.destroy()
+      return res.redirect('/admin/blogs?action=delete')
+    }
+    res.redirect('/admin/blogs')
+  } catch (error) {
+    console.log(error)
+  }
   res.redirect('/admin/blogs?action=delete')
 })
 
@@ -33,13 +44,14 @@ router.get('/category/delete/:categoryid', async (req,res) => {
   const {categoryid} = req.params
 
   try {
-    const [categories,]  = await db.execute('SELECT * FROM category WHERE categoryid=?',[categoryid])
-    const category = categories[0]
+    const category = await Category.findByPk(categoryid)
 
-    res.render('admin/category-delete',{
-      title: "delete category",
-      category:category
-    })
+    if(category){
+      res.render('admin/category-delete',{
+        title: "delete category",
+        category:category
+      })
+    }
   } catch (error) {
     console.log(error)
   }
@@ -47,10 +59,17 @@ router.get('/category/delete/:categoryid', async (req,res) => {
 
 router.post('/category/delete/:categoryid', async (req,res) => {
   const { categoryid } = req.body
-  await db.execute('DELETE FROM category where categoryid=?',[categoryid])
+  try {
+    await Category.destroy({
+      where: {
+        category_id: categoryid
+      }
+    })
+  } catch (error) {
+    console.log(error)
+  }
   res.redirect('/admin/categories?action=delete')
 })
-
 
 router.get('/blog/create',async(req,res,next) => {
   try {
@@ -64,7 +83,6 @@ router.get('/blog/create',async(req,res,next) => {
     console.log(error)
   }
 })
-
 
 router.post("/blog/create", imageUpload.upload.single('resim'),async (req,res) => {
   const {baslik,aciklama,kategori,altbaslik} = req.body
@@ -112,11 +130,11 @@ router.get('/blogs/:blogid', async (req,res,next) => {
   const {blogid} = req.params
   try {
     const blog = await Blog.findByPk(blogid)
-    const categories = await Category.findAll()
+    const categories = await Category.findAll({raw:true})
     if(blog){
       return res.render("admin/blog-edit",{
-        title: blog.dataValues.title,
-        blog: blog.dataValues,
+        title: blog.title,
+        blog: blog,
         categories: categories
       })
     }
@@ -132,19 +150,29 @@ router.post('/blogs/:blogid', imageUpload.upload.single('resim'), async (req,res
   let resim = req.body.resim
   if(req.file){
     resim = req.file.filename
-    fs.unlink("./public/images/"+ req.body.resim,err => {
+    await fs.unlink("./public/images/"+ req.body.resim,err => {
       console.log(err)
     })
   }
   const anasayfa = req.body.anasayfa == 'on' ? 1 : 0
   const isActive = req.body.isActive == 'on' ? 1 : 0
   try {
-    const blog = await db.execute('UPDATE blog SET title=?,description=?,image=?,is_home=?,confirm=?,categoryid=?,subtitle=? WHERE blogid=?',[baslik,aciklama,resim,anasayfa,isActive,kategori,altbaslik,blogid])
+    const blog = await Blog.findByPk(blogid)
     if(blog){
-      res.redirect('/admin/blogs?action=edit&blogid='+blogid)
+      blog.title = baslik
+      blog.subtitle = altbaslik
+      blog.description = aciklama
+      blog.image = resim
+      blog.is_home = anasayfa
+      blog.confirm = isActive
+      blog.category_id = kategori
+
+      await blog.save();
+      return res.redirect('/admin/blogs?action=edit&blogid='+blogid)
     }
+    res.redirect('/admin/blogs')
   } catch (error) {
-    
+    console.log(error)
   }
 })
 
@@ -168,10 +196,13 @@ router.get('/categories/:categoryid', async (req,res,next) => {
 router.post('/categories/:categoryid', async (req,res) => {
   const {categoryid,name} = req.body
   try {
-    const category = await db.execute('UPDATE category SET name=? WHERE categoryid=?',[name,categoryid])
-    if(category){
-      res.redirect('/admin/categories?action=edit&categoryid='+categoryid)
-    }
+    // const category = await db.execute('UPDATE category SET name=? WHERE categoryid=?',[name,categoryid])
+    await Category.update({name: name},{
+      where: {
+        category_id: categoryid
+      }
+    })
+    return res.redirect('/admin/categories?action=edit&categoryid='+categoryid)
   } catch (error) {
     console.log(error)
   }

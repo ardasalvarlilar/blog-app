@@ -46,7 +46,7 @@
               <select name="kategori"  id="kategori" class="form-select">
                 <option value="-1" selected>seçiniz</option>
                 <% categories.forEach(category => { %>
-                  <option value="<%= category.dataValues.categoryid %>"><%= category.dataValues.name %></option>
+                  <option value="<%= category.category_id %>"><%= category.name %></option>
                 <% }) %>
               </select>
               

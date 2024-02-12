@@ -18,7 +18,6 @@ const Category = sequelize.define('category',{
 
 async function syncTable(){
   await Category.sync({alter: true})
-  console.log('Category tablosu eklendi')
 
   // await Category.create({ name: 'Web geliştirme'}) // tekli create
   const count = await Category.count()
@@ -29,10 +28,6 @@ async function syncTable(){
       { name: 'React geliştirme'},
     ]) // çoklu ekleme
   }
-
-  
-
-  console.log('Kategori eklendi')
 }
 syncTable()
 

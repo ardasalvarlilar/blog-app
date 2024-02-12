@@ -40,8 +40,6 @@ const Blog = sequelize.define('blog',{
 
 async function syncTable(){
   await Blog.sync({alter: true})
-  console.log('blog tablosu eklendi')
-
   const count = await Blog.count()
   if(count === 0){
     await Blog.create({
