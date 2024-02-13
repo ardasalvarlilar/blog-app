@@ -1,5 +1,7 @@
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
+
+
 exports.get_register = async (req,res) => {
   try {
     return res.render('auth/register', {
@@ -20,6 +22,48 @@ exports.post_register = async (req,res) => {
       password: hashedPassword 
     })
     return res.redirect('login')
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+exports.get_login = async (req,res) => {
+  try {
+    return res.render('auth/login',{
+      title: 'login page'
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+exports.post_login = async (req,res) => {
+  const {email,password} = req.body
+
+
+  try {
+    const user = await User.findOne({
+      where: {
+        email: email,
+      }
+    })
+
+    if(!user){
+      return res.render('auth/login',{
+        title: 'login page',
+        message: 'email hatalı'
+      })
+    }
+
+    const match = await bcrypt.compare(password, user.password)
+    if(match){
+      return res.redirect('/')
+    }
+    return res.render('auth/login',{
+      title: 'login page',
+      message: 'parola hatalı'
+    })
+    
   } catch (error) {
     console.log(error)
   }
