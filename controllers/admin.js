@@ -125,7 +125,15 @@ exports.post_category_create = async (req,res) => {
 exports.get_blog_edit = async (req,res,next) => {
   const {blogid} = req.params
   try {
-    const blog = await Blog.findByPk(blogid)
+    const blog = await Blog.findOne({
+      where: {
+        id: blogid
+      },
+      include: {
+        model: Category,
+        attributes: ["id"]
+      }
+    })
     const categories = await Category.findAll({raw:true})
     if(blog){
       return res.render("admin/blog-edit",{

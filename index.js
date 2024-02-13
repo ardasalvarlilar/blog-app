@@ -30,7 +30,7 @@ Blog.belongsTo(Category)
 
 // iife
 const iife = async () => {
-  await sequelize.sync({alter: true})
+  await sequelize.sync({force: true})
   await dummyData()
 }
 iife()
