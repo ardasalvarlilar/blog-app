@@ -23,9 +23,7 @@
         <% blogs.forEach(blog => { %>
           <%- include('../partials/blog-card',blog) %>
         <% }) %>
-        <% if (blogs.filter(blog => blog.confirm).length > 3) { %>
-          <%- include('../partials/pagination.ejs') %>
-        <% } %>
+        <%- include('../partials/pagination.ejs') %>
       </div>
     </div>
   </div>

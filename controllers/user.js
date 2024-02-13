@@ -34,7 +34,7 @@ exports.blog_list = async (req,res,next) => {
   const slug = req.params.slug
 
   try {
-    const blogs = await Blog.findAll({
+    const {rows, count} = await Blog.findAndCountAll({
       where: {confirm: true},
       raw: true,
       include: slug ? {model: Category, where: {url: slug}} : null, 
@@ -44,7 +44,10 @@ exports.blog_list = async (req,res,next) => {
     const categories = await Category.findAll({raw: true})
     res.render("users/blogs",{
       title: "Tüm Kurslar",
-      blogs: blogs,
+      blogs: rows,
+      totalItems: count,
+      totalPages: Math.ceil(count / size),
+      currentPage: page,
       categories: categories,
       selectedCategory: slug
     });
