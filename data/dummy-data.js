@@ -1,7 +1,8 @@
 const Category = require('../models/category')
 const Blog = require('../models/blog')
 const slugField = require('../helpers/slug-field')
-
+const User = require('../models/user')
+const bcrypt = require('bcrypt')
 async function populate(){
   const count = await Category.count()
   if(count === 0){
@@ -30,6 +31,10 @@ async function populate(){
       {title: 'Mobil oyun geliştirme bootcampi 13',url: slugField('Yapay zeka geliştirme bootcampi'),subtitle: 'yapay öğren',description: 'python numpy pandas R ',image: '5.jpg',is_home: true, confirm: true, },
       {title: 'Mobil oyun geliştirme bootcampi 14',url: slugField('Yapay zeka geliştirme bootcampi'),subtitle: 'yapay öğren',description: 'python numpy pandas R ',image: '5.jpg',is_home: true, confirm: true, },
       {title: 'Mobil oyun geliştirme bootcampi 15',url: slugField('Yapay zeka geliştirme bootcampi'),subtitle: 'yapay öğren',description: 'python numpy pandas R ',image: '5.jpg',is_home: true, confirm: true, },
+    ])
+
+    const users = await User.bulkCreate([
+      {fullname: 'Arda Şalvarlılar', email: 'arda4salvar7@gmail.com',password: await bcrypt.hash('123456',10)}
     ])
 
     await categories[0].addBlog(blogs[0])
