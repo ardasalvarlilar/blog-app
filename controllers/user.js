@@ -3,30 +3,7 @@ const Category = require('../models/category')
 const {Op} = require('sequelize')
 
 
-exports.blogs_by_category = async (req, res)=> {
-  const slug = req.params.slug
-  try {
-    const blogs = await Blog.findAll({
-      where: {
-        confirm: true
-      },
-      include: {
-        model: Category,
-        where: {id: slug}
-      },
-      raw: true
-    })
-    const categories = await Category.findAll({raw: true})
-    res.render("users/blogs",{
-      title: "Tüm Kurslar",
-      blogs: blogs,
-      categories:categories,
-      selectedCategory: slug
-    })
-  } catch (error) {
-    console.log(error)
-  }
-}
+
 
 exports.blogs_details = async (req,res,next) => {
   const slug = req.params.slug
@@ -52,20 +29,24 @@ exports.blogs_details = async (req,res,next) => {
 }
 
 exports.blog_list = async (req,res,next) => {
+  const size = 5
+  const {page = 0} = req.query
+  const slug = req.params.slug
 
   try {
     const blogs = await Blog.findAll({
-      where: {
-        confirm: true
-      },
-      raw: true
+      where: {confirm: true},
+      raw: true,
+      include: slug ? {model: Category, where: {url: slug}} : null, 
+      limit: size,
+      offset: page * size 
     })
     const categories = await Category.findAll({raw: true})
     res.render("users/blogs",{
       title: "Tüm Kurslar",
       blogs: blogs,
       categories: categories,
-      selectedCategory: null
+      selectedCategory: slug
     });
   } catch (error) {
     console.log(error)
