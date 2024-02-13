@@ -21,15 +21,10 @@ const dummyData = require('./data/dummy-data')
 const Category = require('./models/category')
 const Blog = require('./models/blog')
 // relations
-// one to many
-Category.hasMany(Blog,{
-  foreignKey: {
-    name: 'categoryId',
-    allowNull: false
-  },
-  // onDelete: "RESTRICT",
-  // onUpdate: "RESTRICT"
-})
+
+Blog.belongsToMany(Category, {through: "blogCategories"})
+Category.belongsToMany(Blog, {through: "blogCategories"})
+
 Blog.belongsTo(Category)
 // sync
 

@@ -17,7 +17,6 @@ async function populate(){
       image: '5.jpg',
       is_home: true, 
       confirm: true, 
-      categoryId: 1
     })
 
     await Blog.create({
@@ -27,7 +26,6 @@ async function populate(){
       image: '5.jpg',
       is_home: true, 
       confirm: true, 
-      categoryId: 2
     })
 
     await Blog.create({
@@ -37,7 +35,6 @@ async function populate(){
       image: '5.jpg',
       is_home: true, 
       confirm: true, 
-      categoryId: 3
     })
   }
 
