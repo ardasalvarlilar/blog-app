@@ -24,7 +24,13 @@
             <div class="row mb-3">
               <label for="altbaslik" class="col-sm-1 col-form-label">Altbaşlık</label>
               <div class="col-sm-11">
-                <textarea name="altbaslik" class="form-control"rows="5"><%= blog.subtitle %></textarea>
+                <textarea name="altbaslik" id="altbaslik" class="form-control"rows="5"><%= blog.subtitle %></textarea>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="url" class="col-sm-1 col-form-label">url</label>
+              <div class="col-sm-11">
+                <input name="url" id="url" class="form-control" value="<%= blog.url %>"/>
               </div>
             </div>
             <div class="row mb-3">

@@ -4,7 +4,7 @@ const {Op} = require('sequelize')
 
 
 exports.blogs_by_category = async (req, res)=> {
-  const categoryid = req.params.categoryid
+  const slug = req.params.slug
   try {
     const blogs = await Blog.findAll({
       where: {
@@ -12,7 +12,7 @@ exports.blogs_by_category = async (req, res)=> {
       },
       include: {
         model: Category,
-        where: {id: categoryid}
+        where: {id: slug}
       },
       raw: true
     })
@@ -21,7 +21,7 @@ exports.blogs_by_category = async (req, res)=> {
       title: "Tüm Kurslar",
       blogs: blogs,
       categories:categories,
-      selectedCategory: categoryid
+      selectedCategory: slug
     })
   } catch (error) {
     console.log(error)
@@ -29,10 +29,14 @@ exports.blogs_by_category = async (req, res)=> {
 }
 
 exports.blogs_details = async (req,res,next) => {
-  const id = req.params.blogid
+  const slug = req.params.slug
 
   try {
-    const blog = await Blog.findByPk(id)
+    const blog = await Blog.findOne({
+      where: {
+        url: slug
+      }
+    })
     if(blog){
       return res.render("users/blog-details",{
         title: blog.title,

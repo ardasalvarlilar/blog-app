@@ -4,7 +4,7 @@ const Blog = require('../models/blog')
 const Category = require('../models/category')
 const {Op} = require('sequelize')
 const sequelize = require('../data/db')
-
+const slugField = require('../helpers/slug-field')
 
 exports.get_blog_delete = async (req,res) => {
   const {blogid} = req.params
@@ -84,7 +84,7 @@ exports.get_blog_create = async(req,res,next) => {
 }
 
 exports.post_blog_create = async (req,res) => {
-  const {baslik,aciklama,kategori,altbaslik} = req.body
+  const {baslik,aciklama,altbaslik} = req.body
   const resim = req.file.filename
   const anasayfa = req.body.anasayfa == 'on' ? 1 : 0
   const isActive = req.body.isActive == 'on' ? 1 : 0
@@ -92,12 +92,12 @@ exports.post_blog_create = async (req,res) => {
   try {
     await Blog.create({
       title: baslik,
+      url: slugField(baslik),
       subtitle: altbaslik,
       description: aciklama,
       image: resim,
       is_home: anasayfa,
-      confirm: isActive,
-      categoryId: kategori
+      confirm: isActive
     })
     res.redirect('/admin/blogs?action=create')
   } catch (error) {
@@ -152,7 +152,7 @@ exports.get_blog_edit = async (req,res,next) => {
 }
 
 exports.post_blog_edit = async (req,res) => {
-  const {blogid,baslik,aciklama,altbaslik} = req.body
+  const {blogid,url,baslik,aciklama,altbaslik} = req.body
   const categoryIds = req.body.categories
   console.log(categoryIds)
   let resim = req.body.resim
@@ -176,6 +176,7 @@ exports.post_blog_edit = async (req,res) => {
     })
     if(blog) {
       blog.title = baslik
+      blog.url = url
       blog.subtitle = altbaslik
       blog.description = aciklama
       blog.image = resim
