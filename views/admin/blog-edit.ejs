@@ -10,81 +10,83 @@
 
   <div class="container mt-3">
 
+    <form method="post" enctype="multipart/form-data">
     <div class="row my-5 gx-5">
-      <div class="col-md-10">
-        <form method="post" enctype="multipart/form-data">
-          <input type="hidden" value="<%= blog.id %>" name="blogid">
-          <input type="hidden" name="resim" value="<%= blog.image%>">
-          <div class="row mb-3">
-            <label for="baslik" class="col-sm-1 col-form-label">Başlık</label>
-            <div class="col-sm-11">
-              <input type="text" class="form-control" value="<%= blog.title %>" name="baslik" id="baslik">
+        <div class="col-md-10">
+            <input type="hidden" value="<%= blog.id %>" name="blogid">
+            <input type="hidden" name="resim" value="<%= blog.image%>">
+            <div class="row mb-3">
+              <label for="baslik" class="col-sm-1 col-form-label">Başlık</label>
+              <div class="col-sm-11">
+                <input type="text" class="form-control" value="<%= blog.title %>" name="baslik" id="baslik">
+              </div>
             </div>
-          </div>
-          <div class="row mb-3">
-            <label for="altbaslik" class="col-sm-1 col-form-label">Altbaşlık</label>
-            <div class="col-sm-11">
-              <textarea name="altbaslik" class="form-control"rows="5"><%= blog.subtitle %></textarea>
+            <div class="row mb-3">
+              <label for="altbaslik" class="col-sm-1 col-form-label">Altbaşlık</label>
+              <div class="col-sm-11">
+                <textarea name="altbaslik" class="form-control"rows="5"><%= blog.subtitle %></textarea>
+              </div>
             </div>
-          </div>
-          <div class="row mb-3">
-            <label for="editor" class="col-sm-1 col-form-label">Açıklama</label>
-            <div class="col-sm-11">
-              <textarea name="aciklama" class="form-control" id="editor" rows="10"><%= blog.description %></textarea>
+            <div class="row mb-3">
+              <label for="editor" class="col-sm-1 col-form-label">Açıklama</label>
+              <div class="col-sm-11">
+                <textarea name="aciklama" class="form-control" id="editor" rows="10"><%= blog.description %></textarea>
+              </div>
             </div>
-          </div>
-          <div class="row mb-3">
-            <label for="resim" class="col-sm-1 col-form-label">Resim</label>
-            <div class="col-sm-11">
-              <img src="/static/images/<%= blog.image %>" width="120" alt="">
-              <input type="file" name="resim" class="form-control" id="resim">
+            <div class="row mb-3">
+              <label for="resim" class="col-sm-1 col-form-label">Resim</label>
+              <div class="col-sm-11">
+                <img src="/static/images/<%= blog.image %>" width="120" alt="">
+                <input type="file" name="resim" class="form-control" id="resim">
+              </div>
             </div>
-          </div>
-          
+            
 
-          <div class="row mb-3">
-            <div class="col-sm-11 offset-sm-1">
-              <button type="submit" class="btn btn-primary">Kaydet</button>
+            <div class="row mb-3">
+              <div class="col-sm-11 offset-sm-1">
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+              </div>
             </div>
-          </div>
-        </form>
-      </div>
-      <div class="col-md-2">
-        <div class="row">
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="anasayfa" <%=  blog.is_home ? 'checked' : '' %> name="anasayfa">
-            <label for="anasayfa" class="form-check-label">
-              Anasayfa
-            </label>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" <%= blog.confirm ? 'checked' : '' %> id="isActive" name="isActive">
-            <label for="isActive" class="form-check-label">
-              is active
-            </label>
-          </div>
-        </div>
 
-        <div class="row border-top pt-3">
-          <% categories.forEach(category => { %>
+        </div>
+        <div class="col-md-2">
+          <div class="row">
             <div class="form-check">
-              <input 
-                <%= blog.categories.some(cat => cat.id == category.id) ? "checked" : '' %>
-                type="checkbox" 
-                class="form-check-input" 
-                id="category_<%= category.id %>" 
-                name="isActive"
-              >
-              <label for="category_<%= category.id %>" class="form-check-label">
-                <%= category.name %>
+              <input type="checkbox" class="form-check-input" id="anasayfa" <%=  blog.is_home ? 'checked' : '' %> name="anasayfa">
+              <label for="anasayfa" class="form-check-label">
+                Anasayfa
               </label>
             </div>
-          <% }) %>
+          </div>
+          <div class="row mb-3">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" <%= blog.confirm ? 'checked' : '' %> id="isActive" name="isActive">
+              <label for="isActive" class="form-check-label">
+                is active
+              </label>
+            </div>
+          </div>
+
+          <div class="row border-top pt-3">
+            <% categories.forEach(category => { %>
+              <div class="form-check">
+                <input 
+                  <%= blog.categories.some(cat => cat.id == category.id) ? "checked" : '' %>
+                  type="checkbox" 
+                  class="form-check-input" 
+                  id="category_<%= category.id %>" 
+                  name="categories[]"
+                  value="<%= category.id %>"
+                >
+                <label for="category_<%= category.id %>" class="form-check-label">
+                  <%= category.name %>
+                </label>
+              </div>
+            <% }) %>
+          </div>
         </div>
       </div>
-    </div>
+    </form>
   </div>
 
   <script>

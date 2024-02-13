@@ -13,6 +13,8 @@ router.post('/category/delete/:categoryid', adminController.post_category_delete
 
 router.get('/blog/create',adminController.get_blog_create)
 
+router.post('/categories/remove', adminController.get_category_remove)
+
 router.post("/blog/create", imageUpload.upload.single('resim'),adminController.post_blog_create)
 
 router.get('/category/create',adminController.get_category_create)

@@ -2,6 +2,9 @@ const fs = require('fs')
 
 const Blog = require('../models/blog')
 const Category = require('../models/category')
+const {Op} = require('sequelize')
+const sequelize = require('../data/db')
+
 
 exports.get_blog_delete = async (req,res) => {
   const {blogid} = req.params
@@ -149,7 +152,9 @@ exports.get_blog_edit = async (req,res,next) => {
 }
 
 exports.post_blog_edit = async (req,res) => {
-  const {blogid,baslik,aciklama,kategori,altbaslik} = req.body
+  const {blogid,baslik,aciklama,altbaslik} = req.body
+  const categoryIds = req.body.categories
+  console.log(categoryIds)
   let resim = req.body.resim
   if(req.file){
     resim = req.file.filename
@@ -160,23 +165,52 @@ exports.post_blog_edit = async (req,res) => {
   const anasayfa = req.body.anasayfa == 'on' ? 1 : 0
   const isActive = req.body.isActive == 'on' ? 1 : 0
   try {
-    await Blog.update({
-      title: baslik,
-      subtitle: altbaslik,
-      description: aciklama,
-      image: resim,
-      is_home: anasayfa,
-      confirm: isActive,
-      categoryId: kategori
-    },{
+    const blog = await Blog.findOne({
       where: {
         id: blogid
+      },
+      include: {
+        model: Category,
+        attributes: ["id"]
       }
     })
-    return res.redirect('/admin/blogs?action=edit&blogid='+blogid)
+    if(blog) {
+      blog.title = baslik
+      blog.subtitle = altbaslik
+      blog.description = aciklama
+      blog.image = resim
+      blog.is_home = anasayfa
+      blog.confirm = isActive
+      if(categoryIds === undefined){
+        await blog.removeCategories(blog.categories)
+      }else{
+        await blog.removeCategories(blog.categories)
+        const selectedCategories = await Category.findAll({
+          where: {
+            id: {
+              [Op.in]: categoryIds
+            }
+          }
+        })
+        await blog.addCategories(selectedCategories)
+      }
+
+      await blog.save()
+      return res.redirect('/admin/blogs?action=edit&blogid='+blogid)
+    }
+    res.redirect('/admin/blogs')
   } catch (error) {
     console.log(error)
   }
+}
+
+exports.get_category_remove = async (req,res) => {
+  const blogid = req.body.blogid
+  const categoryid = req.body.categoryid
+
+  await sequelize.query(`DELETE FROM blogCategories WHERE blogId=${blogid} AND categoryId=${categoryid}`)
+  res.redirect('/admin/categories/'+categoryid)
+
 }
 
 exports.get_category_edit = async (req,res,next) => {
