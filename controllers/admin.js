@@ -175,10 +175,14 @@ exports.get_category_edit = async (req,res,next) => {
   const {categoryid} = req.params
   try {
     const category = await Category.findByPk(categoryid)
+    const blogs = await category.getBlogs()
+    const countBlogs = await category.countBlogs()
     if(category ){
       return res.render("admin/category-edit",{
         title: category.name,
-        category: category
+        category: category,
+        blogs: blogs,
+        countBlogs :countBlogs
       }) 
     }
     res.redirect('admin/categories')

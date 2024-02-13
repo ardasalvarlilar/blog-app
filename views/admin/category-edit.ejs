@@ -12,21 +12,49 @@
 
     <div class="row">
       <div class="col-md-12 mt-3">
-        <form method="post">
-          <input type="hidden" name="categoryid" value="<%= category.id %>">
-          <div class="row mb-3">
-            <label for="name" class="col-sm-2 col-form-label">Name</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" id="name" value="<%= category.name %>" name="name">
+        <div class="card card-body">
+          <form method="post">
+            <input type="hidden" name="categoryid" value="<%= category.id %>">
+            <div class="row mb-3">
+              <label for="name" class="col-sm-2 col-form-label">Name</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="name" value="<%= category.name %>" name="name">
+              </div>
             </div>
-          </div>
-
-          <div class="row mb-3">
-            <div class="col-sm-8 offset-sm-2">
-              <button type="submit" class="btn btn-primary">Kaydet</button>
+  
+            <div class="row mb-3">
+              <div class="col-sm-8 offset-sm-2">
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
+        <p><%= countBlogs %> adet blog listeleniyor.</p>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <td style="width: 50px;">id</td>
+              <td style="width: 150px;">resim</td>
+              <td>başlık</td>
+              <td style="width: 130px;"></td>
+            </tr>
+          </thead>
+          <tbody>
+            <% blogs.forEach(blog => { %>
+              <tr>
+                <td><%= blog.id %></td>
+                <td>
+                  <img src="/static/images/<%= blog.image %>" alt="<%= blog.title %>" class="img-fluid">
+                </td>
+                <td><%= blog.title %></td>
+                <td>
+                  <a href="/admin/blogs/<%= blog.id %>" class="btn btn-sm btn-primary">edit</a>
+                  <a href="/admin/blog/delete/<%= blog.id %>" class="btn btn-sm btn-danger">delete</a>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

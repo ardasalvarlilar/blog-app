@@ -23,15 +23,19 @@ const Blog = require('./models/blog')
 // relations
 // one to many
 Category.hasMany(Blog,{
-  foreignKey: 'categoryId',
-  allowNull: true
+  foreignKey: {
+    name: 'categoryId',
+    allowNull: false
+  },
+  // onDelete: "RESTRICT",
+  // onUpdate: "RESTRICT"
 })
 Blog.belongsTo(Category)
 // sync
 
 // iife
 const iife = async () => {
-  await sequelize.sync({force: true})
+  await sequelize.sync({alter: true})
   await dummyData()
 }
 iife()
