@@ -1,11 +1,12 @@
 const express = require('express');
-
+const cookieParser = require('cookie-parser')
 const app = express();
 
 const path = require('path');
 
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({extended: false}))
+app.use(cookieParser())
 
 const userRoutes = require('./routes/user');
 const adminRoutes = require('./routes/admin')

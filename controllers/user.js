@@ -57,6 +57,7 @@ exports.blog_list = async (req,res,next) => {
 }
 
 exports.index = async (req,res,next) => {
+  const {isAuth} = req.cookies
   try {
     const blogs = await Blog.findAll({
       where:{
@@ -72,7 +73,8 @@ exports.index = async (req,res,next) => {
       title: "Popüler Kurslar",
       blogs: blogs,
       categories: categories,
-      selectedCategory: null
+      selectedCategory: null,
+      isAuth: isAuth
     });
   } catch (error) {
     console.log(error)

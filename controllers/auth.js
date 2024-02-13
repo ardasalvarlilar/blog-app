@@ -28,9 +28,10 @@ exports.post_register = async (req,res) => {
 }
 
 exports.get_login = async (req,res) => {
+
   try {
     return res.render('auth/login',{
-      title: 'login page'
+      title: 'login page',
     })
   } catch (error) {
     console.log(error)
@@ -57,6 +58,7 @@ exports.post_login = async (req,res) => {
 
     const match = await bcrypt.compare(password, user.password)
     if(match){
+      res.cookie('isAuth',1)
       return res.redirect('/')
     }
     return res.render('auth/login',{
@@ -64,6 +66,16 @@ exports.post_login = async (req,res) => {
       message: 'parola hatalı'
     })
     
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+exports.get_logout = async (req,res) => {
+
+  try {
+    res.clearCookie('isAuth')
+    return res.redirect('/account/login')
   } catch (error) {
     console.log(error)
   }
