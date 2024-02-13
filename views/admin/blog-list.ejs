@@ -30,10 +30,11 @@
         <table class="table table-bordered table-striped">
           <thead>
             <tr>
-              <td style="width: 50px;">id</td>
-              <td style="width: 150px;">resim</td>
-              <td>başlık</td>
-              <td style="width: 130px;"></td>
+              <th style="width: 50px;">id</th>
+              <th style="width: 150px;">resim</th>
+              <th>başlık</th>
+              <th>kategory</th>
+              <th style="width: 130px;"></th>
             </tr>
           </thead>
           <tbody>
@@ -44,6 +45,9 @@
                   <img src="/static/images/<%= blog.image %>" alt="<%= blog.title %>" class="img-fluid">
                 </td>
                 <td><%= blog.title %></td>
+                <td>
+                  <%= blog.category.name %>
+                </td>
                 <td>
                   <a href="/admin/blogs/<%= blog.id %>" class="btn btn-sm btn-primary">edit</a>
                   <a href="/admin/blog/delete/<%= blog.id %>" class="btn btn-sm btn-danger">delete</a>
