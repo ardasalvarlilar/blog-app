@@ -1,12 +1,22 @@
 const express = require('express');
 const cookieParser = require('cookie-parser')
 const app = express();
+const session = require('express-session')
 
 const path = require('path');
 
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({extended: false}))
 app.use(cookieParser())
+
+app.use(session({
+  secret: "hello node",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24
+  }
+}))
 
 const userRoutes = require('./routes/user');
 const adminRoutes = require('./routes/admin')

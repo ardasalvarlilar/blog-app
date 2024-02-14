@@ -58,7 +58,7 @@ exports.post_login = async (req,res) => {
 
     const match = await bcrypt.compare(password, user.password)
     if(match){
-      res.cookie('isAuth',1)
+      req.session.isAuth = 1
       return res.redirect('/')
     }
     return res.render('auth/login',{
@@ -74,7 +74,7 @@ exports.post_login = async (req,res) => {
 exports.get_logout = async (req,res) => {
 
   try {
-    res.clearCookie('isAuth')
+    await req.session.destroy()
     return res.redirect('/account/login')
   } catch (error) {
     console.log(error)

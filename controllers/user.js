@@ -57,7 +57,7 @@ exports.blog_list = async (req,res,next) => {
 }
 
 exports.index = async (req,res,next) => {
-  const {isAuth} = req.cookies
+  const {isAuth} = req.session
   try {
     const blogs = await Blog.findAll({
       where:{
