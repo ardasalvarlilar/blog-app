@@ -57,7 +57,6 @@ exports.blog_list = async (req,res,next) => {
 }
 
 exports.index = async (req,res,next) => {
-  const {isAuth} = req.session
   try {
     const blogs = await Blog.findAll({
       where:{
@@ -74,7 +73,6 @@ exports.index = async (req,res,next) => {
       blogs: blogs,
       categories: categories,
       selectedCategory: null,
-      isAuth: isAuth
     });
   } catch (error) {
     console.log(error)

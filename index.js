@@ -18,6 +18,7 @@ const authRoutes = require('./routes/auth')
 // custom modules
 const sequelize = require('./data/db')
 const dummyData = require('./data/dummy-data')
+const locals = require('./middlewares/locals')
 
 // template engine
 app.set('view engine', 'ejs')
@@ -42,6 +43,7 @@ app.use(session({
   })
 }))
 
+app.use(locals)
 
 
 app.use('/libs',express.static(path.join(__dirname, 'node_modules')));
