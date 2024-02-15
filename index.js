@@ -31,7 +31,7 @@ const User = require('./models/user');
 const Role = require('./models/role');
 
 // middleware
-app.use(express.urlencoded({extended: false}))
+app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
 app.use(session({
   secret: "hello node",

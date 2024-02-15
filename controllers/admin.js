@@ -346,7 +346,7 @@ exports.roles_remove = async (req,res) => {
     await sequelize.query(`DELETE FROM userRoles WHERE userId=${userid} AND roleId=${roleid}`)
     return res.redirect('/admin/roles/'+roleid)
   } catch (error) {
-    
+    console.log(error)
   }
 }
 
@@ -364,6 +364,65 @@ exports.get_user = async (req,res) => {
       users: users
     })
   } catch (error) {
+    console.log(error)
+  }
+}
+
+exports.get_user_edit = async (req,res) => {
+  const userid = req.params.userid
+  try {
+    const user = await User.findOne({
+      where: {id: userid},
+      include:{
+        model: Role,
+        attributes: ['id']
+      }
+    })
+    const roles = await Role.findAll()
+    console.log('butun roller:',roles)
+    res.render('admin/user-edit',{
+      title: 'user detail',
+      user: user,
+      roles: roles
+    })
+  } catch (error) {
     
+  }
+}
+
+exports.post_user_edit = async (req,res) => {
+  const userid = req.body.userid
+  const fullname = req.body.fullname
+  const email = req.body.email
+  const roleIds = req.body.roles
+  console.log(roleIds)
+  try {
+    const user = await User.findOne({
+      where: {id: userid},
+      include:{model: Role,attributes: ['id']}
+    })
+    
+    if(user){
+      user.fullname = fullname
+      user.email = email
+      if(roleIds == undefined){
+        await user.removeRoles(user.roles)
+      }else{
+        await user.removeRoles(user.roles)
+        const selectedRoles = await Role.findAll({
+          where:{
+            id: {
+              [Op.in]: roleIds
+            }
+          }
+        })
+        await user.addRoles(selectedRoles)
+      }
+      await user.save()
+      return res.redirect('/admin/users')
+    }
+    return res.redirect('/admin/users')
+  } catch (error) {
+    console.log(error)
   }
 }
