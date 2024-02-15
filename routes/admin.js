@@ -35,4 +35,7 @@ router.get('/blogs',isAuth,adminController.get_blogs)
 
 router.get('/categories',isAuth, adminController.get_categories)
 
+router.get('/roles',isAuth, adminController.get_roles)
+// router.get('/roles/:roleid',isAuth,csrf, adminController.get_role_edit)
+// router.post('/roles/remove',isAuth, adminController.roles_remove)
 module.exports = router;

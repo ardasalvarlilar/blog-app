@@ -5,6 +5,8 @@ const Category = require('../models/category')
 const {Op} = require('sequelize')
 const sequelize = require('../data/db')
 const slugField = require('../helpers/slug-field')
+const Role = require('../models/role')
+const User = require('../models/user')
 
 exports.get_blog_delete = async (req,res) => {
   const {blogid} = req.params
@@ -278,6 +280,28 @@ exports.get_categories = async (req,res,next) => {
       categories: categories,
       action: action,
       categoryid:categoryid
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+exports.get_roles = async (req,res,next) => {
+  try {
+    const roles = await Role.findAll({
+      attributes: {
+        include: ['role.id','role.rolename',[sequelize.fn('COUNT',sequelize.col('users.id')),'user_count']]
+      },
+      include: [
+        {model: User, attributes: ['id']}
+      ],
+      group: ['role.id'],
+      raw: true,
+      includeIgnoreAttributes: false
+    })
+    res.render('admin/role-list',{
+      title: 'role list',
+      roles: roles
     })
   } catch (error) {
     console.log(error)
