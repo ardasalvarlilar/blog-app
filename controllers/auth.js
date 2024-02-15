@@ -16,11 +16,18 @@ exports.post_register = async (req,res) => {
   const {name,email,password} = req.body
   const hashedPassword = await bcrypt.hash(password,10)
   try {
+    const user = await User.findOne({where: {email: email}})
+    if(user){
+      req.session.message = {text: 'Girdiğiniz mail adresi zaten kayıtlı', class: 'warning'}
+      return res.redirect('login')
+    }
     await User.create({
       fullname: name,
       email: email,
       password: hashedPassword 
     })
+    req.session.message = {text: 'Hesabınıza giriş yapabilirsiniz', class: 'success'}
+
     return res.redirect('login')
   } catch (error) {
     console.log(error)
@@ -28,10 +35,12 @@ exports.post_register = async (req,res) => {
 }
 
 exports.get_login = async (req,res) => {
-
+  const message = req.session.message
+  delete req.session.message
   try {
     return res.render('auth/login',{
       title: 'login page',
+      message: message
     })
   } catch (error) {
     console.log(error)
@@ -52,7 +61,7 @@ exports.post_login = async (req,res) => {
     if(!user){
       return res.render('auth/login',{
         title: 'login page',
-        message: 'email hatalı'
+        message: {text: 'Email hatalı', class: 'danger'}
       })
     }
 
@@ -65,7 +74,7 @@ exports.post_login = async (req,res) => {
     }
     return res.render('auth/login',{
       title: 'login page',
-      message: 'parola hatalı'
+      message: {text: 'Parola hatalı', class: 'danger'}
     })
     
   } catch (error) {
