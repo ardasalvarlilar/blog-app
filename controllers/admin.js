@@ -349,3 +349,21 @@ exports.roles_remove = async (req,res) => {
     
   }
 }
+
+exports.get_user = async (req,res) => {
+  try {
+    const users = await User.findAll({
+      attributes: ['id','fullname','email'],
+      include: {
+        model: Role,
+        attributes: ['rolename']
+      }
+    })
+    res.render('admin/user-list',{
+      title: 'user list',
+      users: users
+    })
+  } catch (error) {
+    
+  }
+}
