@@ -1,6 +1,7 @@
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
-
+const emailService = require('../helpers/send-mail')
+const config = require('../config')
 
 exports.get_register = async (req,res) => {
   try {
@@ -21,10 +22,17 @@ exports.post_register = async (req,res) => {
       req.session.message = {text: 'Girdiğiniz mail adresi zaten kayıtlı', class: 'warning'}
       return res.redirect('login')
     }
-    await User.create({
+    const newUser = await User.create({
       fullname: name,
       email: email,
       password: hashedPassword 
+    })
+
+    emailService.sendMail({
+      from: config.email.from,
+      to: newUser.email,
+      subject: 'Hesabınız oluşturuldu',
+      text: 'Hesabınız başarılı şekilde oluşturuldu.'
     })
     req.session.message = {text: 'Hesabınıza giriş yapabilirsiniz', class: 'success'}
 
