@@ -12,6 +12,9 @@ router.post('/login', authController.post_login)
 router.get('/reset-password',csrf, authController.get_reset)
 router.post('/reset-password', authController.post_reset)
 
+router.get('/new-password/:token',csrf, authController.get_newpassword)
+router.post('/new-password', authController.post_newpassword)
+
 router.get('/logout',csrf, authController.get_logout)
 
 

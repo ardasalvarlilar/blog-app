@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const emailService = require('../helpers/send-mail')
 const config = require('../config')
 const crypto = require('crypto')
+const { Op } = require('sequelize')
 
 exports.get_register = async (req,res) => {
   try {
@@ -137,12 +138,58 @@ exports.post_reset = async (req,res) => {
       html: `
         <p>Parolanızı günvellemek için aşağıdaki linki kullanın</p>
         <p>
-          <a href="http://127.0.0.1:3000/account/reset-password/${token}">Parola sıfırla</a>
+          <a href="http://127.0.0.1:3000/account/new-password/${token}">Parola sıfırla</a>
         </p>
       `
     })
     req.session.message = {text: 'Parolanızı sıfırlamak için eposta adresinizi kontrol ediniz', class:'success'}
     res.redirect('login')
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+exports.get_newpassword = async (req,res) => {
+  const token = req.params.token
+  try {
+    const user = await User.findOne({
+      where: {
+        resetToken: token,
+        resetTokenExpiration: {
+          [Op.gt] : Date.now()
+        }
+      }
+    })
+    return res.render('auth/new-password', {
+      title: 'reset password',
+      token: token,
+      userId: user.id
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+exports.post_newpassword = async (req,res) => {
+  const {token,userId} = req.body
+  const newPassword = req.body.password
+  try {
+    const user = await User.findOne({
+      where: {
+        resetToken: token,
+        resetTokenExpiration: {
+          [Op.gt] : Date.now()
+        },
+        id: userId
+      }
+    })
+
+    user.password = await bcrypt.hash(newPassword,10)
+    user.resetToken = null
+    user.resetTokenExpiration = null
+    await user.save()
+    req.session.message = {text: 'Parolanız güncellendi', class: 'success'}
+    return res.redirect('login')
   } catch (error) {
     console.log(error)
   }
