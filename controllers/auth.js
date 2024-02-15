@@ -40,7 +40,8 @@ exports.get_login = async (req,res) => {
   try {
     return res.render('auth/login',{
       title: 'login page',
-      message: message
+      message: message,
+      csrfToken: req.csrfToken()
     })
   } catch (error) {
     console.log(error)

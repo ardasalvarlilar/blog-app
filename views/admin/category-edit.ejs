@@ -50,6 +50,7 @@
                 <td>
                   <a href="/admin/blogs/<%= blog.id %>" class="btn btn-sm btn-primary">edit</a>
                   <form style="display: inline-block;" action="/admin/categories/remove" method="post">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken%>">
                     <input type="hidden" name="blogid" value="<%= blog.id %>">
                     <input type="hidden" name="categoryid" value="<%= category.id %>">
                     <button class="btn btn-sm btn-danger" type="submit">Kategoriden çıkra</button>
