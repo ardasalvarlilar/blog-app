@@ -307,3 +307,45 @@ exports.get_roles = async (req,res,next) => {
     console.log(error)
   }
 }
+
+exports.get_role_edit = async (req,res,next) => {
+  const {roleid} = req.params
+  try {
+    const role = await Role.findByPk(roleid)
+    const users = await role.getUsers()
+    if(role){
+      return res.render('admin/role-edit',{
+        title: role.rolename,
+        role:role,
+        users:users
+      })
+    }
+    res.redirect('admin/roles')
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+exports.post_role_edit = async (req,res,next) => {
+  const {roleid, rolename} = req.body
+  try {
+    await Role.update({rolename: rolename},{
+      where: {
+        id: roleid
+      }
+    })
+    return res.redirect('/admin/roles')
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+exports.roles_remove = async (req,res) => {
+  const {roleid, userid} = req.body
+  try {
+    await sequelize.query(`DELETE FROM userRoles WHERE userId=${userid} AND roleId=${roleid}`)
+    return res.redirect('/admin/roles/'+roleid)
+  } catch (error) {
+    
+  }
+}
