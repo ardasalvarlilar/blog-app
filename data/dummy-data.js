@@ -3,6 +3,7 @@ const Blog = require('../models/blog')
 const slugField = require('../helpers/slug-field')
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
+const Role = require('../models/role')
 async function populate(){
   const count = await Category.count()
   if(count === 0){
@@ -12,6 +13,24 @@ async function populate(){
       { name: 'mobil geliştirme',url: slugField('Mobil geliştirme'),},
       { name: 'React geliştirme',url: slugField('React geliştirme'),},
     ]) // çoklu ekleme
+
+    const users = await User.bulkCreate([
+      {fullname: 'Arda Şalvarlılar', email: 'arda4salvar7@gmail.com',password: await bcrypt.hash('123456',10)},
+      {fullname: 'Tuna Şalvarlılar', email: 'tunasalvarlilar@gmail.com',password: await bcrypt.hash('tuna123',10)},
+      {fullname: 'Göksu Akımsar', email: 'goksuakimsar@gmail.com',password: await bcrypt.hash('goksu123',10)},
+      {fullname: 'Gökhan Bıyıkoğlu', email: 'gokhanbyk@gmail.com',password: await bcrypt.hash('gokhan123',10)},
+    ])
+
+    const roles = await Role.bulkCreate([
+      {rolename: "admin"},
+      {rolename: "moderator"},
+      {rolename: "guest"},
+    ])
+
+    await users[0].addRole(roles[0])
+    await users[1].addRole(roles[1])
+    await users[2].addRole(roles[0])
+    await users[3].addRole(roles[2])
 
     const blogs = await Blog.bulkCreate([
       {title: 'Web geliştirmeyi öğren',url: slugField('Web geliştirmeyi öğren'),subtitle: 'web öğren',description: 'html css scss tailwind javascript react nodejs',image: '5.jpg',is_home: true, confirm: true, },
@@ -33,9 +52,7 @@ async function populate(){
       {title: 'Mobil oyun geliştirme bootcampi 15',url: slugField('Yapay zeka geliştirme bootcampi'),subtitle: 'yapay öğren',description: 'python numpy pandas R ',image: '5.jpg',is_home: true, confirm: true, },
     ])
 
-    const users = await User.bulkCreate([
-      {fullname: 'Arda Şalvarlılar', email: 'arda4salvar7@gmail.com',password: await bcrypt.hash('123456',10)}
-    ])
+
 
     await categories[0].addBlog(blogs[0])
     await categories[0].addBlog(blogs[1])

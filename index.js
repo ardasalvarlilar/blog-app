@@ -27,7 +27,8 @@ app.set('view engine', 'ejs')
 // Models
 const Category = require('./models/category')
 const Blog = require('./models/blog')
-const User = require('./models/user')
+const User = require('./models/user');
+const Role = require('./models/role');
 
 // middleware
 app.use(express.urlencoded({extended: false}))
@@ -65,8 +66,8 @@ Blog.belongsTo(User,{
 User.hasMany(Blog)
 Blog.belongsToMany(Category, {through: "blogCategories"})
 Category.belongsToMany(Blog, {through: "blogCategories"})
-
-Blog.belongsTo(Category)
+Role.belongsToMany(User,{through: 'userRoles'})
+User.belongsToMany(Role,{through: 'userRoles'})
 // sync
 
 // iife
