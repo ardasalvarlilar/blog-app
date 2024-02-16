@@ -10,9 +10,9 @@ const User = require('../models/user')
 
 exports.get_blog_delete = async (req,res) => {
   const {blogid} = req.params
-
+  const userid = req.session.userid
   try {
-    const blog = await Blog.findByPk(blogid)
+    const blog = await Blog.findOne({where:{id: blogid, userId: userid}})
 
     if(blog){
       return res.render('admin/blog-delete',{
@@ -90,6 +90,7 @@ exports.post_blog_create = async (req,res) => {
   const resim = req.file.filename
   const anasayfa = req.body.anasayfa == 'on' ? 1 : 0
   const isActive = req.body.isActive == 'on' ? 1 : 0
+  const userid = req.session.userid
 
   try {
     await Blog.create({
@@ -99,7 +100,8 @@ exports.post_blog_create = async (req,res) => {
       description: aciklama,
       image: resim,
       is_home: anasayfa,
-      confirm: isActive
+      confirm: isActive,
+      userId: userid
     })
     res.redirect('/admin/blogs?action=create')
   } catch (error) {
@@ -117,7 +119,7 @@ exports.get_category_create = async(req,res,next) => {
   }
 }
 
-exports.post_category_create = async (req,res) => {
+exports.post_category_create = async (req,res) => { 
   const {name} = req.body
   try {
     await Category.create({name: name})
@@ -129,10 +131,13 @@ exports.post_category_create = async (req,res) => {
 
 exports.get_blog_edit = async (req,res,next) => {
   const {blogid} = req.params
+  const userid = req.session.userid
+
   try {
     const blog = await Blog.findOne({
       where: {
-        id: blogid
+        id: blogid,
+        userId: userid
       },
       include: {
         model: Category,
@@ -156,6 +161,8 @@ exports.get_blog_edit = async (req,res,next) => {
 exports.post_blog_edit = async (req,res) => {
   const {blogid,url,baslik,aciklama,altbaslik} = req.body
   const categoryIds = req.body.categories
+  const userid = req.session.userid
+
   console.log(categoryIds)
   let resim = req.body.resim
   if(req.file){
@@ -169,7 +176,8 @@ exports.post_blog_edit = async (req,res) => {
   try {
     const blog = await Blog.findOne({
       where: {
-        id: blogid
+        id: blogid,
+        userId: userid
       },
       include: {
         model: Category,
@@ -251,14 +259,18 @@ exports.post_category_edit = async (req,res) => {
 }
 
 exports.get_blogs = async (req,res,next) => {
+  const userid = req.session.userid
   const {action,blogid} = req.query
+  const isModerator = req.session.roles.includes('moderator')
+  const isAdmin = req.session.roles.includes('admin')
   try {
     const blogs = await Blog.findAll({
       attributes:['id','title','subtitle','image'],
       include: {
         model: Category,
         attributes: ['name']
-      }
+      },
+      where: isModerator && !isAdmin ? {userId: userid} : null
     })
     res.render('admin/blog-list',{
       title: 'Blogs list',
