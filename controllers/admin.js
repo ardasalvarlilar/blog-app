@@ -11,8 +11,9 @@ const User = require('../models/user')
 exports.get_blog_delete = async (req,res) => {
   const {blogid} = req.params
   const userid = req.session.userid
+  const isAdmin = req.session.roles.includes('admin')
   try {
-    const blog = await Blog.findOne({where:{id: blogid, userId: userid}})
+    const blog = await Blog.findOne({where: isAdmin ? {id: blogid} : {id: blogid, userId: userid}})
 
     if(blog){
       return res.render('admin/blog-delete',{
@@ -132,13 +133,11 @@ exports.post_category_create = async (req,res) => {
 exports.get_blog_edit = async (req,res,next) => {
   const {blogid} = req.params
   const userid = req.session.userid
+  const isAdmin = req.session.roles.includes('admin')
 
   try {
     const blog = await Blog.findOne({
-      where: {
-        id: blogid,
-        userId: userid
-      },
+      where: isAdmin ? {id: blogid} : {id: blogid,userId: userid },
       include: {
         model: Category,
         attributes: ["id"]
@@ -152,7 +151,7 @@ exports.get_blog_edit = async (req,res,next) => {
         categories: categories
       })
     }
-    res.redirect('admin/blogs')
+    res.redirect('/admin/blogs')
   } catch (error) {
     console.log(error)
   }

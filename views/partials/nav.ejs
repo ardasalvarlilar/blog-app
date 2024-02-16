@@ -6,16 +6,18 @@
       <li class="nav-item">
         <a href="/blogs" class="nav-link">Blog listesi</a>
       </li>
-      <% if (isAuth) { %>
+      <% if (isAdmin || isModerator) { %>
         
         <li class="nav-item">
-          <a href="/admin/blogs" class="nav-link">Admin Blogs</a>
-        </li>
-        <li class="nav-item">
-          <a href="/admin/categories" class="nav-link">Admin Categories</a>
+          <a href="/admin/blogs" class="nav-link"><%= isAdmin ? 'Admin' : 'Moderator' %> Blogs</a>
         </li>
         <li class="nav-item">
           <a href="/admin/blog/create" class="nav-link">Add Blog</a>
+        </li>
+      <% } %>
+      <% if (isAdmin) { %>
+        <li class="nav-item">
+          <a href="/admin/categories" class="nav-link">Admin Categories</a>
         </li>
         <li class="nav-item">
           <a href="/admin/category/create" class="nav-link">Add Category</a>
