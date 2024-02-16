@@ -88,12 +88,28 @@ exports.get_blog_create = async(req,res,next) => {
 
 exports.post_blog_create = async (req,res) => {
   const {baslik,aciklama,altbaslik} = req.body
-  const resim = req.file.filename
   const anasayfa = req.body.anasayfa == 'on' ? 1 : 0
   const isActive = req.body.isActive == 'on' ? 1 : 0
   const userid = req.session.userid
 
+  let resim = ""
+
   try {
+    if(baslik == ''){
+      throw new Error('başlık boş geçilemez')
+    }
+    if(baslik.length < 5 || baslik.length > 20){
+      throw new Error('başlık 5-20 karakter aralığında olmalıdır.')
+    }
+    if(aciklama == ''){
+      throw new Error('açıklama boş bırakılamaz')
+    }
+    if(req.file) {
+      res = req.file.filename
+      fs.unlink('./public/images/'+ req.body.resim, (err) => {
+        console.log(err)
+      })
+    }
     await Blog.create({
       title: baslik,
       url: slugField(baslik),
@@ -106,7 +122,15 @@ exports.post_blog_create = async (req,res) => {
     })
     res.redirect('/admin/blogs?action=create')
   } catch (error) {
-    console.log(error)
+    let errorMessage = ''
+    if (error instanceof Error){
+      errorMessage += error.message
+      res.render('admin/blog-create',{
+        title: 'add Blog',
+        categories: await Category.findAll(),
+        message: {text: errorMessage, class: 'danger'}
+      })
+    }
   }
 }
 

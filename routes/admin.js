@@ -19,7 +19,7 @@ router.get("/blog/create",isModerator,csrf, adminController.get_blog_create);
 
 router.post("/categories/remove",isAdmin, adminController.get_category_remove);
 
-router.post("/blog/create",isModerator, imageUpload.upload.single("resim"), adminController.post_blog_create);
+router.post("/blog/create",isModerator,csrf, imageUpload.upload.single("resim"), adminController.post_blog_create);
 
 router.get("/category/create",isAdmin,csrf, adminController.get_category_create);
 
@@ -32,7 +32,7 @@ router.post("/blogs/:blogid",isModerator,csrf, imageUpload.upload.single("resim"
 router.get("/categories/:categoryid",isAdmin,csrf, adminController.get_category_edit);
 
 router.post("/categories/:categoryid",isAdmin, adminController.post_category_edit);
- 
+
 router.get("/blogs",isModerator,adminController.get_blogs);
 
 router.get("/categories",isAdmin, adminController.get_categories);
