@@ -11,11 +11,11 @@ exports.get_register = async (req,res) => {
       title: 'register'
     })
   } catch (error) {
-    console.log(error)
+    next(error)
   }
 }
 
-exports.post_register = async (req,res) => {
+exports.post_register = async (req,res,next) => {
   const {name,email,password} = req.body
   try {
     // throw new Error('error')
@@ -46,9 +46,8 @@ exports.post_register = async (req,res) => {
         message: {text: mesg, class: 'danger'}
       })
     }else{
-      res.redirect('/500')
+      next(error)
     }
-    
   }
 }
 
@@ -62,7 +61,7 @@ exports.get_login = async (req,res) => {
       csrfToken: req.csrfToken()
     })
   } catch (error) {
-    console.log(error)
+    next(error)
   }
 }
 
@@ -103,7 +102,7 @@ exports.post_login = async (req,res) => {
     })
     
   } catch (error) {
-    console.log(error)
+    next(error)
   }
 }
 
@@ -113,7 +112,7 @@ exports.get_logout = async (req,res) => {
     await req.session.destroy()
     return res.redirect('/account/login')
   } catch (error) {
-    console.log(error)
+    next(error)
   }
 }
 

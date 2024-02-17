@@ -55,7 +55,11 @@ app.use('/static',express.static(path.join(__dirname,'public')));
 app.use('/admin',adminRoutes)
 app.use('/account',authRoutes)
 app.use(userRoutes)
-app.use("/500", (req,res) => {
+app.use((err,req,res,next) => {
+  console.log(err.message)
+  next(err)
+})
+app.use((err,req,res,next) => {
   res.status(500).render('error/500',{
     title: 'Error page'
   })
