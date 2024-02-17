@@ -19,25 +19,25 @@
         <% } %>
         <form method="post" enctype="multipart/form-data" action="/admin/blog/create?_csrf=<%= csrfToken %>">
           <div class="row mb-3">
-            <label for="baslik" class="col-sm-2 col-form-label">Başlık</label>
+            <label for="baslik" class="col-sm-2 col-form-label">Title</label>
             <div class="col-sm-8">
               <input type="text" class="form-control" name="baslik" id="baslik">
             </div>
           </div>
           <div class="row mb-3">
-            <label for="altbaslik" class="col-sm-2 col-form-label">Altbaşlık</label>
+            <label for="altbaslik" class="col-sm-2 col-form-label">subtitle</label>
             <div class="col-sm-8">
               <textarea name="altbaslik" class="form-control"rows="5"></textarea>
             </div>
           </div>
           <div class="row mb-3">
-            <label for="editor" class="col-sm-2 col-form-label">Açıklama</label>
+            <label for="editor" class="col-sm-2 col-form-label">description</label>
             <div class="col-sm-8">
               <textarea name="aciklama" class="form-control" id="editor" rows="10"></textarea>
             </div>
           </div>
           <div class="row mb-3">
-            <label for="resim" class="col-sm-2 col-form-label">Resim</label>
+            <label for="resim" class="col-sm-2 col-form-label">image</label>
             <div class="col-sm-8">
               <input type="file" name="resim" class="form-control" id="resim">
             </div>
@@ -47,7 +47,7 @@
               <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="anasayfa" name="anasayfa">
                 <label for="anasayfa" class="form-check-label">
-                  Anasayfa
+                  is home 
                 </label>
               </div>
             </div>
@@ -64,7 +64,7 @@
           </div>
           <div class="row mb-3">
             <div class="col-sm-8 offset-sm-2">
-              <button type="submit" class="btn btn-primary">Kaydet</button>
+              <button type="submit" class="btn btn-primary">Save</button>
             </div>
           </div>
         </form>

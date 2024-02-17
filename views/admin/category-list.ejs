@@ -12,15 +12,15 @@
 
     <% if (action === 'edit') { %>
       <div id="queryString" class="alert alert-primary text-center" role="alert">
-        <h3><%= categoryid %> id numaralı category başarıyla güncellendi</h3>
+        <h3>Category updated category id with: <%= categoryid %> </h3>
       </div>
     <% } else if (action === 'delete') { %>
       <div id="queryString" class="alert alert-danger text-center" role="alert">
-        <h3>category başarıyla silindi</h3>
+        <h3>category deleted successfully</h3>
       </div>
     <% } else if (action === 'create') { %>
       <div id="queryString" class="alert alert-success text-center" role="alert">
-        <h3>category başarıyla eklendi</h3>
+        <h3>category added successfully</h3>
       </div>
     <% } %>
 

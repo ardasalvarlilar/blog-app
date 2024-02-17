@@ -35,7 +35,7 @@ const Blog = sequelize.define('blog',{
   validate: {
     checkValidOnay(){
       if(this.anasayfa && !this.onay){
-        throw new Error('Anasayfaya aldığınız bloğu onaylamadınız')
+        throw new Error('did not confirmed the blog which added to home page')
       }  
     }
   }

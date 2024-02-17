@@ -3,7 +3,7 @@ module.exports = (req,res,next) => {
     return res.redirect('/account/login?returnUrl='+req.originalUrl)
   }
   if(!req.session.roles.includes('admin') && !req.session.roles.includes('moderator')){
-    req.session.message = {text: 'yetkili bir kullanıcıyla oturum açınız'}
+    req.session.message = {text: 'Please log in with autherized user account'}
     return res.redirect('/account/login?returnUrl='+req.originalUrl)
   }
   next()

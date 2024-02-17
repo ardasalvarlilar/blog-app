@@ -18,13 +18,13 @@
             <input type="hidden" value="<%= blog.id %>" name="blogid">
             <input type="hidden" name="resim" value="<%= blog.image%>">
             <div class="row mb-3">
-              <label for="baslik" class="col-sm-1 col-form-label">Başlık</label>
+              <label for="baslik" class="col-sm-1 col-form-label">title</label>
               <div class="col-sm-11">
                 <input type="text" class="form-control" value="<%= blog.title %>" name="baslik" id="baslik">
               </div>
             </div>
             <div class="row mb-3">
-              <label for="altbaslik" class="col-sm-1 col-form-label">Altbaşlık</label>
+              <label for="altbaslik" class="col-sm-1 col-form-label">subtitle</label>
               <div class="col-sm-11">
                 <textarea name="altbaslik" id="altbaslik" class="form-control"rows="5"><%= blog.subtitle %></textarea>
               </div>
@@ -36,13 +36,13 @@
               </div>
             </div>
             <div class="row mb-3">
-              <label for="editor" class="col-sm-1 col-form-label">Açıklama</label>
+              <label for="editor" class="col-sm-1 col-form-label">description</label>
               <div class="col-sm-11">
                 <textarea name="aciklama" class="form-control" id="editor" rows="10"><%= blog.description %></textarea>
               </div>
             </div>
             <div class="row mb-3">
-              <label for="resim" class="col-sm-1 col-form-label">Resim</label>
+              <label for="resim" class="col-sm-1 col-form-label">image</label>
               <div class="col-sm-11">
                 <img src="/static/images/<%= blog.image %>" width="120" alt="">
                 <input type="file" name="resim" class="form-control" id="resim">
@@ -52,7 +52,7 @@
 
             <div class="row mb-3">
               <div class="col-sm-11 offset-sm-1">
-                <button type="submit" class="btn btn-primary">Kaydet</button>
+                <button type="submit" class="btn btn-primary">Savew</button>
               </div>
             </div>
 
@@ -62,7 +62,7 @@
             <div class="form-check">
               <input type="checkbox" class="form-check-input" id="anasayfa" <%=  blog.is_home ? 'checked' : '' %> name="anasayfa">
               <label for="anasayfa" class="form-check-label">
-                Anasayfa
+                is home
               </label>
             </div>
           </div>

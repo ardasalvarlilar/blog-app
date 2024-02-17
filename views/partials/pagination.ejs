@@ -3,7 +3,7 @@
     <ul class="pagination justify-content-start">
 
       <li class="page-item">
-        <a href="?page=0" class="page-link">İlk sayfa</a>
+        <a href="?page=0" class="page-link">First page</a>
       </li>
 
       <% for( let i = 0; i < totalPages; i++ ) { %>
@@ -13,7 +13,7 @@
       <% } %> 
 
       <li class="page-item">
-        <a href="?page=<%= totalPages - 1 %>" class="page-link">Son sayfa</a>
+        <a href="?page=<%= totalPages - 1 %>" class="page-link">Last page</a>
       </li>
     </ul>
   </nav>

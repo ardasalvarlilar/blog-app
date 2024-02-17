@@ -28,10 +28,10 @@ exports.post_register = async (req,res,next) => {
     emailService.sendMail({
       from: config.email.from,
       to: newUser.email,
-      subject: 'Hesabınız oluşturuldu',
-      text: 'Hesabınız başarılı şekilde oluşturuldu.'
+      subject: 'account creation',
+      text: 'your account has been created successfully'
     })
-    req.session.message = {text: 'Hesabınıza giriş yapabilirsiniz', class: 'success'}
+    req.session.message = {text: 'you can sign in your account', class: 'success'}
 
     return res.redirect('login')
   } 
@@ -79,7 +79,7 @@ exports.post_login = async (req,res,next) => {
     if(!user){
       return res.render('auth/login',{
         title: 'login page',
-        message: {text: 'Email hatalı', class: 'danger'}
+        message: {text: 'Email did not match', class: 'danger'}
       })
     }
 
@@ -98,7 +98,7 @@ exports.post_login = async (req,res,next) => {
     }
     return res.render('auth/login',{
       title: 'login page',
-      message: {text: 'Parola hatalı', class: 'danger'}
+      message: {text: 'password did not match', class: 'danger'}
     })
     
   } catch (error) {
@@ -136,7 +136,7 @@ exports.post_reset = async (req,res,next) => {
     const user = await User.findOne({where: {email: email}})
 
     if(!user){
-      req.session.message = {text: 'Girdiğiniz mail adresi bulunamadı', class: 'danger'}
+      req.session.message = {text: 'Counld not found mail entered', class: 'danger'}
       return res.redirect('reset-password')
     }
 
@@ -149,13 +149,13 @@ exports.post_reset = async (req,res,next) => {
       to: email,
       subject: 'reset password',
       html: `
-        <p>Parolanızı günvellemek için aşağıdaki linki kullanın</p>
+        <p>Use the link below to reset your password</p>
         <p>
-          <a href="http://127.0.0.1:3000/account/new-password/${token}">Parola sıfırla</a>
+          <a href="http://127.0.0.1:3000/account/new-password/${token}">Reset password</a>
         </p>
       `
     })
-    req.session.message = {text: 'Parolanızı sıfırlamak için eposta adresinizi kontrol ediniz', class:'success'}
+    req.session.message = {text: 'Check your email to reset your password', class:'success'}
     res.redirect('login')
   } catch (error) {
     console.log(error)
@@ -202,7 +202,7 @@ exports.post_newpassword = async (req,res,next) => {
     user.resetToken = null
     user.resetTokenExpiration = null
     await user.save()
-    req.session.message = {text: 'Parolanız güncellendi', class: 'success'}
+    req.session.message = {text: 'Your password has been updated successfully', class: 'success'}
     return res.redirect('login')
   } catch (error) {
     console.log(error)

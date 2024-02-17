@@ -14,13 +14,13 @@
       <div class="col-md-12 mt-3 text-center">
         <div class="alert alert-secondary">
           <p class="mb-3">
-            <b><%= category.name %> </b><br> isimli category kaydını silmek istiyor musunuz?
+            Would you like to delete category named: <b><%= category.name %> </b><br>
           </p>
           <form method="post">
           <input type="hidden" name="_csrf" value="<%= csrfToken%>">
             <input type="hidden" name="categoryid" value="<%= category.id %>">
-            <button type="submit" class="btn btn-danger">Evet</button>
-            <a href="/admin/categories" class="btn btn-primary">Vazgeç</a>
+            <button type="submit" class="btn btn-danger">Yes</button>
+            <a href="/admin/categories" class="btn btn-primary">return categories</a>
           </form>
         </div>
       </div>

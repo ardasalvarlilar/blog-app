@@ -8,7 +8,7 @@ const User = sequelize.define('user',{
     allowNull: false,
     validate: {
       notEmpty: {
-        msg: 'ad soyad girmelisiniz '
+        msg: 'can not leave blank name and surname '
       },
       isFullname(value){
         if(value.split(' ').length < 2){
@@ -26,10 +26,10 @@ const User = sequelize.define('user',{
     },
     validate: {
       notEmpty: {
-        msg: 'email boş bırakılamaz'
+        msg: 'email can not leave blank'
       },
       isEmail: {
-        msg: 'email formatına uygun bir adres giriniz'
+        msg: 'please enter your email in valid format'
       }
     }
   },

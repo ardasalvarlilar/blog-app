@@ -12,15 +12,15 @@
 
     <% if (action === 'edit') { %>
       <div id="queryString" class="alert alert-primary text-center" role="alert">
-        <h3><%= blogid %> id numaralı blog başarıyla güncellendi</h3>
+        <h3> Updated blog with id<%= blogid %></h3>
       </div>
     <% } else if (action === 'delete') { %>
       <div id="queryString" class="alert alert-danger text-center" role="alert">
-        <h3>blog başarıyla silindi</h3>
+        <h3>blog deleted successfully</h3>
       </div>
     <% } else if (action === 'create') { %>
       <div id="queryString" class="alert alert-success text-center" role="alert">
-        <h3>blog başarıyla eklendi</h3>
+        <h3>blog added successfully</h3>
       </div>
     <% } %>
 
@@ -31,9 +31,9 @@
           <thead>
             <tr>
               <th style="width: 50px;">id</th>
-              <th style="width: 150px;">resim</th>
-              <th>başlık</th>
-              <th>kategory</th>
+              <th style="width: 150px;">image</th>
+              <th>title</th>
+              <th>categor</th>
               <th style="width: 130px;"></th>
             </tr>
           </thead>

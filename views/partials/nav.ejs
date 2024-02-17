@@ -4,7 +4,7 @@
 
     <ul class="navbar-nav me-auto">
       <li class="nav-item">
-        <a href="/blogs" class="nav-link">Blog listesi</a>
+        <a href="/blogs" class="nav-link">Blog list</a>
       </li>
       <% if (isAdmin || isModerator) { %>
         
@@ -35,10 +35,10 @@
 
       <% if (typeof isAuth != 'undefined' && isAuth == '1') { %>
         <li class="nav-item"><a href="/account/index" class="nav-link"><%= fullname %></a></li>
-        <li class="nav-item"><a href="/account/logout" class="nav-link">Çıkış yap</a></li>
+        <li class="nav-item"><a href="/account/logout" class="nav-link">Sign out</a></li>
         <% } else { %>
-          <li class="nav-item"><a href="/account/login" class="nav-link">giriş yap</a></li>
-          <li class="nav-item"><a href="/account/register" class="nav-link">Kayıt ol</a></li>
+          <li class="nav-item"><a href="/account/login" class="nav-link">Sign in </a></li>
+          <li class="nav-item"><a href="/account/register" class="nav-link">Register</a></li>
       <% } %>
 
       

@@ -14,13 +14,13 @@
       <div class="col-md-12 mt-3 text-center">
         <div class="alert alert-secondary">
           <p class="mb-3">
-            <b><%= blog.title %> </b><br> isimli blog kaydını silmek istiyor musunuz?
+            Would you like to delete blog named: <b><%= blog.title %> </b><br>
           </p>
           <form method="post">
           <input type="hidden" name="_csrf" value="<%= csrfToken%>">
             <input type="hidden" name="blogid" value="<%= blog.id %>">
-            <button type="submit" class="btn btn-danger">Evet</button>
-            <a href="/admin/blogs" class="btn btn-primary">Vazgeç</a>
+            <button type="submit" class="btn btn-danger">Yes</button>
+            <a href="/admin/blogs" class="btn btn-primary">return blogs</a>
           </form>
         </div>
       </div>

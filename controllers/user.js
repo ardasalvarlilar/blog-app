@@ -43,7 +43,7 @@ exports.blog_list = async (req,res,next) => {
     })
     const categories = await Category.findAll({raw: true})
     res.render("users/blogs",{
-      title: "Tüm Kurslar",
+      title: "All blogs",
       blogs: rows,
       totalItems: count,
       totalPages: Math.ceil(count / size),
@@ -69,7 +69,7 @@ exports.index = async (req,res,next) => {
     })
     const categories = await Category.findAll()
     res.render("users/index",{
-      title: "Popüler Kurslar",
+      title: "Popular Blogs",
       blogs: blogs,
       categories: categories,
       selectedCategory: null,

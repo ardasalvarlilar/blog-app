@@ -9,9 +9,9 @@ async function populate(){
   if(count === 0){
     
     const categories = await Category.bulkCreate([ 
-      { name: 'Web geliştirme',url: slugField('Web geliştirme'),},
-      { name: 'mobil geliştirme',url: slugField('Mobil geliştirme'),},
-      { name: 'React geliştirme',url: slugField('React geliştirme'),},
+      { name: 'Category name 1',url: slugField('Category name 1'),},
+      { name: 'category name 2',url: slugField('category name 2'),},
+      { name: 'category name 3',url: slugField('category name 3'),},
     ]) // çoklu ekleme
 
     const users = await User.bulkCreate([
@@ -33,23 +33,10 @@ async function populate(){
     await users[3].addRole(roles[1])
 
     const blogs = await Blog.bulkCreate([
-      {title: 'Web geliştirmeyi öğren',url: slugField('Web geliştirmeyi öğren'),subtitle: 'web öğren',description: 'html css scss tailwind javascript react nodejs',image: '5.jpg',is_home: true, confirm: true,userId:2 },
-      {title: 'React geliştirme kursu',url: slugField('React geliştirme kursu'),subtitle: 'react öğren',description: 'react props hooks effect state nextjs nodejs',image: '5.jpg',is_home: true, confirm: true,userId:2 },
-      {title: 'Mobil oyun geliştirme bootcampi',url: slugField('Yapay zeka geliştirme bootcampi'),subtitle: 'yapay öğren',description: 'python numpy pandas R ',image: '5.jpg',is_home: true, confirm: true,userId:2 },
-      {title: 'Mobil oyun geliştirme bootcampi 2',url: slugField('Yapay zeka geliştirme bootcampi'),subtitle: 'yapay öğren',description: 'python numpy pandas R ',image: '5.jpg',is_home: true, confirm: true,userId:2 },
-      {title: 'Mobil oyun geliştirme bootcampi 3',url: slugField('Yapay zeka geliştirme bootcampi'),subtitle: 'yapay öğren',description: 'python numpy pandas R ',image: '5.jpg',is_home: true, confirm: true,userId:2 },
-      {title: 'Mobil oyun geliştirme bootcampi 4',url: slugField('Yapay zeka geliştirme bootcampi'),subtitle: 'yapay öğren',description: 'python numpy pandas R ',image: '5.jpg',is_home: true, confirm: true,userId:2 },
-      {title: 'Mobil oyun geliştirme bootcampi 5',url: slugField('Yapay zeka geliştirme bootcampi'),subtitle: 'yapay öğren',description: 'python numpy pandas R ',image: '5.jpg',is_home: true, confirm: true,userId:4 },
-      {title: 'Mobil oyun geliştirme bootcampi 6',url: slugField('Yapay zeka geliştirme bootcampi'),subtitle: 'yapay öğren',description: 'python numpy pandas R ',image: '5.jpg',is_home: true, confirm: true,userId:4 },
-      {title: 'Mobil oyun geliştirme bootcampi 7',url: slugField('Yapay zeka geliştirme bootcampi'),subtitle: 'yapay öğren',description: 'python numpy pandas R ',image: '5.jpg',is_home: true, confirm: true,userId:4 },
-      {title: 'Mobil oyun geliştirme bootcampi 8',url: slugField('Yapay zeka geliştirme bootcampi'),subtitle: 'yapay öğren',description: 'python numpy pandas R ',image: '5.jpg',is_home: true, confirm: true,userId:4 },
-      {title: 'Mobil oyun geliştirme bootcampi 9',url: slugField('Yapay zeka geliştirme bootcampi'),subtitle: 'yapay öğren',description: 'python numpy pandas R ',image: '5.jpg',is_home: true, confirm: true,userId:4 },
-      {title: 'Mobil oyun geliştirme bootcampi 10',url: slugField('Yapay zeka geliştirme bootcampi'),subtitle: 'yapay öğren',description: 'python numpy pandas R ',image: '5.jpg',is_home: true, confirm: true,userId:4 },
-      {title: 'Mobil oyun geliştirme bootcampi 11',url: slugField('Yapay zeka geliştirme bootcampi'),subtitle: 'yapay öğren',description: 'python numpy pandas R ',image: '5.jpg',is_home: true, confirm: true,userId:2 },
-      {title: 'Mobil oyun geliştirme bootcampi 12',url: slugField('Yapay zeka geliştirme bootcampi'),subtitle: 'yapay öğren',description: 'python numpy pandas R ',image: '5.jpg',is_home: true, confirm: true,userId:2 },
-      {title: 'Mobil oyun geliştirme bootcampi 13',url: slugField('Yapay zeka geliştirme bootcampi'),subtitle: 'yapay öğren',description: 'python numpy pandas R ',image: '5.jpg',is_home: true, confirm: true,userId:2 },
-      {title: 'Mobil oyun geliştirme bootcampi 14',url: slugField('Yapay zeka geliştirme bootcampi'),subtitle: 'yapay öğren',description: 'python numpy pandas R ',image: '5.jpg',is_home: true, confirm: true,userId:4 },
-      {title: 'Mobil oyun geliştirme bootcampi 15',url: slugField('Yapay zeka geliştirme bootcampi'),subtitle: 'yapay öğren',description: 'python numpy pandas R ',image: '5.jpg',is_home: true, confirm: true,userId:4 },
+      {title: 'blog test 1',url: slugField('blog test 1'),subtitle: 'blog test subtitle',description: 'test description',image: '5.jpg',is_home: true, confirm: true,userId:2 },
+      {title: 'blog test 2',url: slugField('blog test 2'),subtitle: 'blog test subtitle',description: 'test description',image: '5.jpg',is_home: true, confirm: true,userId:2 },
+      {title: 'blog test 3',url: slugField('blog test 3'),subtitle: 'blog test subtitle',description: 'test description',image: '5.jpg',is_home: true, confirm: true,userId:4 },
+      {title: 'blog test 4',url: slugField('blog test 4'),subtitle: 'blog test subtitle',description: 'test description',image: '5.jpg',is_home: true, confirm: true,userId:4 },
     ])
 
 

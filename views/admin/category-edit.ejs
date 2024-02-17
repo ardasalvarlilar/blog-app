@@ -25,18 +25,18 @@
   
             <div class="row mb-3">
               <div class="col-sm-8 offset-sm-2">
-                <button type="submit" class="btn btn-primary">Kaydet</button>
+                <button type="submit" class="btn btn-primary">Save</button>
               </div>
             </div>
           </form>
         </div>
-        <p><%= countBlogs %> adet blog listeleniyor.</p>
+        <p>Listing <%= countBlogs %> blogs</p>
         <table class="table table-bordered table-striped mt-3">
           <thead>
             <tr>
               <td style="width: 50px;">id</td>
-              <td style="width: 150px;">resim</td>
-              <td>başlık</td>
+              <td style="width: 150px;">image</td>
+              <td>title</td>
               <td style="width: 200px;"></td>
             </tr>
           </thead>
@@ -54,7 +54,7 @@
                     <input type="hidden" name="_csrf" value="<%= csrfToken%>">
                     <input type="hidden" name="blogid" value="<%= blog.id %>">
                     <input type="hidden" name="categoryid" value="<%= category.id %>">
-                    <button class="btn btn-sm btn-danger" type="submit">Kategoriden çıkra</button>
+                    <button class="btn btn-sm btn-danger" type="submit">remove from this category</button>
                   </form>
                 </td>
               </tr>

@@ -78,7 +78,7 @@ exports.get_blog_create = async(req,res,next) => {
     // const [categories,] = await db.execute("SELECT * FROM category")
     const categories = await Category.findAll()
     res.render("admin/blog-create",{
-      title: 'Blog Ekle',
+      title: 'add Blog',
       categories: categories 
     })
   } catch (error) {
@@ -98,15 +98,15 @@ exports.post_blog_create = async function(req, res) {
   try {
 
       if(baslik == "") {
-          throw new Error("başlık boş geçilemez");
+          throw new Error("title can not leave blank");
       }
 
       if(baslik.length < 5 || baslik.length > 20) {
-          throw new Error("başlık 5-20 karakter aralığında olmalıdır.");
+          throw new Error("title should be between 5 - 20 characters");
       }
 
       if(aciklama == "") {
-          throw new Error("aciklama boş geçilemez");
+          throw new Error("description can not leave blank");
       }
 
       if(req.file) {
@@ -152,7 +152,7 @@ exports.post_blog_create = async function(req, res) {
 exports.get_category_create = async(req,res,next) => {
   try {
     res.render("admin/category-create",{
-      title: 'Category Ekle',
+      title: 'Add Category',
     })
   } catch (error) {
     res.redirect('/500')
