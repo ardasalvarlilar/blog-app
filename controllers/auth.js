@@ -18,6 +18,7 @@ exports.get_register = async (req,res) => {
 exports.post_register = async (req,res) => {
   const {name,email,password} = req.body
   try {
+    // throw new Error('error')
     const newUser = await User.create({
       fullname: name,
       email: email,
@@ -36,13 +37,18 @@ exports.post_register = async (req,res) => {
   } 
   catch (error) {
     let mesg = ''
-    for(let e of error.errors){
-      mesg += e.message + ""
+    if(error.name == 'SequelizeValidationError' || error.name == 'SequelizeUniqueConstraintError'){
+      for(let e of error.errors){
+        mesg += e.message + ""
+      }
+      return res.render('auth/register', {
+        title: 'register',
+        message: {text: mesg, class: 'danger'}
+      })
+    }else{
+      res.redirect('/500')
     }
-    return res.render('auth/register', {
-      title: 'register',
-      message: {text: mesg, class: 'danger'}
-    })
+    
   }
 }
 

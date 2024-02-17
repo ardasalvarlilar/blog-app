@@ -155,7 +155,7 @@ exports.get_category_create = async(req,res,next) => {
       title: 'Category Ekle',
     })
   } catch (error) {
-    console.log(error)
+    res.redirect('/500')
   }
 }
 
