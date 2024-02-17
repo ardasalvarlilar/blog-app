@@ -31,7 +31,15 @@ const Blog = sequelize.define('blog',{
     allowNull:false,
   }
 },{
-  timestamps: true}
+  timestamps: true,
+  validate: {
+    checkValidOnay(){
+      if(this.anasayfa && !this.onay){
+        throw new Error('Anasayfaya aldığınız bloğu onaylamadınız')
+      }  
+    }
+  }
+}
 )
 
 

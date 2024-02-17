@@ -8,6 +8,11 @@ const User = sequelize.define('user',{
     validate: {
       notEmpty: {
         msg: 'ad soyad girmelisiniz '
+      },
+      isFullname(value){
+        if(value.split(' ').length < 2){
+          throw new Error('please enter name and surname')
+        }
       }
     }
   },
