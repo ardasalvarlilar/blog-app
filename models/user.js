@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../data/db')
+const bcrypt = require('bcrypt')
 
 const User = sequelize.define('user',{
   fullname: {
@@ -34,7 +35,16 @@ const User = sequelize.define('user',{
   },
   password: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      notEmpty: {
+        msg: 'can not leave password blank'
+      },
+      len: {
+        args: [8,20],
+        msg: "password should be between 8 and 20 characters."
+      }
+    }
   },
   resetToken:{
     type: DataTypes.STRING,
@@ -45,5 +55,9 @@ const User = sequelize.define('user',{
     allowNull: true
   }
 },{timestamps: true})
+
+User.afterValidate(async (user) => {
+  user.password = await bcrypt.hash(user.password,10)
+})
 
 module.exports = User

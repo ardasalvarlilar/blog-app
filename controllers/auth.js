@@ -17,12 +17,11 @@ exports.get_register = async (req,res) => {
 
 exports.post_register = async (req,res) => {
   const {name,email,password} = req.body
-  const hashedPassword = await bcrypt.hash(password,10)
   try {
     const newUser = await User.create({
       fullname: name,
       email: email,
-      password: hashedPassword 
+      password: password 
     })
 
     emailService.sendMail({
