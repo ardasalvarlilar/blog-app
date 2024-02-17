@@ -20,6 +20,8 @@ const authRoutes = require('./routes/auth')
 const sequelize = require('./data/db')
 const dummyData = require('./data/dummy-data')
 const locals = require('./middlewares/locals')
+const log = require('./middlewares/log');
+const errorHandling = require('./middlewares/error-handling')
 
 // template engine
 app.set('view engine', 'ejs')
@@ -29,7 +31,6 @@ const Category = require('./models/category')
 const Blog = require('./models/blog')
 const User = require('./models/user');
 const Role = require('./models/role');
-
 // middleware
 app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
@@ -55,15 +56,13 @@ app.use('/static',express.static(path.join(__dirname,'public')));
 app.use('/admin',adminRoutes)
 app.use('/account',authRoutes)
 app.use(userRoutes)
-app.use((err,req,res,next) => {
-  console.log(err.message)
-  next(err)
-})
-app.use((err,req,res,next) => {
-  res.status(500).render('error/500',{
-    title: 'Error page'
+app.use("*",(req,res,next) => {
+  res.status(404).render("error/404",{
+    title: 'not found'
   })
 })
+app.use(log)
+app.use(errorHandling)
 
 
 // relations

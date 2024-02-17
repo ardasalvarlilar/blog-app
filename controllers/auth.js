@@ -5,7 +5,7 @@ const config = require('../config')
 const crypto = require('crypto')
 const { Op } = require('sequelize')
 
-exports.get_register = async (req,res) => {
+exports.get_register = async (req,res,next) => {
   try {
     return res.render('auth/register', {
       title: 'register'
@@ -51,7 +51,7 @@ exports.post_register = async (req,res,next) => {
   }
 }
 
-exports.get_login = async (req,res) => {
+exports.get_login = async (req,res,next) => {
   const message = req.session.message
   delete req.session.message
   try {
@@ -65,7 +65,7 @@ exports.get_login = async (req,res) => {
   }
 }
 
-exports.post_login = async (req,res) => {
+exports.post_login = async (req,res,next) => {
   const {email,password} = req.body
 
 
@@ -106,7 +106,7 @@ exports.post_login = async (req,res) => {
   }
 }
 
-exports.get_logout = async (req,res) => {
+exports.get_logout = async (req,res,next) => {
 
   try {
     await req.session.destroy()
@@ -116,7 +116,7 @@ exports.get_logout = async (req,res) => {
   }
 }
 
-exports.get_reset = async (req,res) => {
+exports.get_reset = async (req,res,next) => {
   const message = req.session.message
   delete req.session.message
   try {
@@ -129,7 +129,7 @@ exports.get_reset = async (req,res) => {
   }
 }
 
-exports.post_reset = async (req,res) => {
+exports.post_reset = async (req,res,next) => {
   const email = req.body.email
   try {
     let token = crypto.randomBytes(32).toString('hex')
@@ -162,7 +162,7 @@ exports.post_reset = async (req,res) => {
   }
 }
 
-exports.get_newpassword = async (req,res) => {
+exports.get_newpassword = async (req,res,next) => {
   const token = req.params.token
   try {
     const user = await User.findOne({
@@ -184,7 +184,7 @@ exports.get_newpassword = async (req,res) => {
   }
 }
 
-exports.post_newpassword = async (req,res) => {
+exports.post_newpassword = async (req,res,next) => {
   const {token,userId} = req.body
   const newPassword = req.body.password
   try {

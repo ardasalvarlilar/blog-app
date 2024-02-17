@@ -21,7 +21,7 @@ exports.blogs_details = async (req,res,next) => {
       })
     }
     else{
-      res.redirect('/')
+      res.redirect('/404')
     }
   } catch (error) {
     console.log(error)
